@@ -19,6 +19,12 @@ export default class RustMapsAPI {
         this.apikey = apikey;
     }
 
+    async getMapByID(mapID: string): Promise<IGetMap> {
+        if (!mapID) throw new Error('You must provide a map seed and map size');
+        const result: IGetMap = await this.request('GET', mapID)
+        return result;
+    }
+
     async filterMaps(filterID: string, page: number = 0): Promise<IGetFilter> {
         if (!filterID) throw new Error('You must provide a filter ID: Visit https://rustmaps.com/ and adjust your map requirements. In the red box above the settings hit the "Share" button, the string at the end of the URL is the filterId');
         const result: IGetFilter = await this.request('GET', filterID, { page })
