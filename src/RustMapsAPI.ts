@@ -19,6 +19,12 @@ export default class RustMapsAPI {
         this.apikey = apikey;
     }
 
+    async getMap({ seed, size, barren, staging }: IMapOptions): Promise<IGetMap> {
+        if (!seed || !size) throw new Error('You must provide a map seed and map size');
+        const result: IGetMap = await this.request('GET', `${seed}/${size}`, { barren, staging })
+        return result;
+    }
+
     async getMapByID(mapID: string): Promise<IGetMap> {
         if (!mapID) throw new Error('You must provide a map seed and map size');
         const result: IGetMap = await this.request('GET', mapID)
