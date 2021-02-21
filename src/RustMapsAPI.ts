@@ -19,6 +19,20 @@ export default class RustMapsAPI {
         this.apikey = apikey;
     }
 
+    private async request(method: 'POST' | 'GET', path: string, params?: {}) {
+        const result = await axios({
+            method: method,
+            baseURL: this.baseurl,
+            url: path,
+            headers: {
+                'X-API-Key': this.apikey,
+                'User-Agent': `RustMapsAPI/${version} (https://www.npmjs.com/package/${name})`
+            },
+            params: params,
+        });
+        return result.data;
+    }
+
     async getMap({ seed, size, barren, staging }: IMapOptions): Promise<IGetMap> {
         if (!seed || !size) throw new Error('You must provide a map seed and map size');
         const result: IGetMap = await this.request('GET', `${seed}/${size}`, { barren, staging })
