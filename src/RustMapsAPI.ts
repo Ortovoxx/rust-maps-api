@@ -18,3 +18,10 @@ export default class RustMapsAPI {
         if (!apikey) throw new Error('You must provide an API key. Login here https://rustmaps.com/user/profile to obtain one');
         this.apikey = apikey;
     }
+    async generateMap({ seed, size, barren, staging }: IMapOptions): Promise<IGenerateMap> {
+        if (!seed || !size) throw new Error('You must provide a map seed and map size');
+        const result: IGenerateMap = await this.request('POST', `${seed}/${size}`, { barren, staging })
+        return result;
+    }
+
+}
