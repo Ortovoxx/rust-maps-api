@@ -18,6 +18,13 @@ export default class RustMapsAPI {
         if (!apikey) throw new Error('You must provide an API key. Login here https://rustmaps.com/user/profile to obtain one');
         this.apikey = apikey;
     }
+
+    async filterMaps(filterID: string, page: number = 0): Promise<IGetFilter> {
+        if (!filterID) throw new Error('You must provide a filter ID: Visit https://rustmaps.com/ and adjust your map requirements. In the red box above the settings hit the "Share" button, the string at the end of the URL is the filterId');
+        const result: IGetFilter = await this.request('GET', filterID, { page })
+        return result;
+    }
+
     async generateMap({ seed, size, barren, staging }: IMapOptions): Promise<IGenerateMap> {
         if (!seed || !size) throw new Error('You must provide a map seed and map size');
         const result: IGenerateMap = await this.request('POST', `${seed}/${size}`, { barren, staging })
